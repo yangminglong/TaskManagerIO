@@ -202,7 +202,7 @@ namespace tm_internal {
     inline bool atomicSwapBool(TmAtomicBool *ptr, bool expected, bool newValue) {
         uint32_t exp32 = expected;
         uint32_t new32 = newValue;
-        uxPortCompareSet(ptr, exp32, &new32);
+        esp_cpu_compare_and_set(ptr, exp32, new32);
         return new32 == expected;
     }
 
@@ -294,7 +294,7 @@ namespace tm_internal {
 #else
 // fall back to using Arduino regular logic, works for all single core boards. If we end up here for a multicore
 // board then there may be problems. Here we are in full arduino mode (AVR, MKR etc).
-# define IOA_USE_ARDUINO
+#define IOA_USE_ARDUINO
 #include <Arduino.h>
 typedef uint8_t pintype_t;
 
